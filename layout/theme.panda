@@ -1,0 +1,278 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8" /> 
+        <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' /><![endif]-->
+        <title>
+        	{{ meta_title }}{% if current_tags %} &ndash; {{ lang.tagged | def:'tagged' }} &quot;{{ current_tags | join: ', ' }}&quot;{% endif %}{% if current_page > 1 %} &ndash; {{ lang.page | def:'Page' }} {{ current_page }}{% endif %}{% unless meta_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+        </title>
+        {% if meta_description %} 
+        <meta name="description" content="{{ meta_description | escape }}" />
+        {% endif %} 
+        {% if meta_keywords %} 
+        <meta name="keywords" content="{{ meta_keywords | escape }}" />
+        {% endif %}
+        {% if shops.size > 1 %}
+            {% for store in shops %}
+                <link rel="alternate" hreflang="{{ store.language }}" href="{{ store.url }}" />
+            {% endfor %}
+        {% endif %}
+        {% comment %}The following is used for hreflang linking between stores sharing the same objects{% endcomment %}
+        {% if shops.size > 1 %}
+            {% for store in shops %}
+                {% capture sitehandle %}site{{ store.id }}{% endcapture %}
+                {% if template contains 'product' %}
+                    {% if product.sales_channels[sitehandle] %}
+                    <link rel="alternate" hreflang="{{ store.locale }}" href="{{ store.url }}/{{ store.handles.product }}/{{ product.handles[store.locale] }}" />
+                    {% endif %}
+                {% elseif template contains 'collection' %}
+                    {% if collection.sales_channels[sitehandle] %}
+                    <link rel="alternate" hreflang="{{ store.locale }}" href="{{ store.url }}/{{ store.handles.collection }}/{{ collection.handles[store.locale] }}" />
+                    {% endif %}
+                {% elseif template contains 'index' %}
+                    <link rel="alternate" hreflang="{{ store.locale }}" href="{{ store.url }}" />
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <link rel="canonical" href="{{ canonical_url }}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {% include 'open-graph-tags' %}
+        {% include 'twitter-card' %}
+        {% if settings.favicon_enable %}
+        <link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/png" />
+        {% endif %}
+        {{ 'shop.scss' | asset_url | stylesheet_tag }}
+        {{ 'custom.css' | asset_url | stylesheet_tag }}
+        {{ 'drift.css' | asset_url | stylesheet_tag }}
+        
+        {% include 'oldIE' %}
+        {% comment %}
+            (Part 1) Javascript snippet to prevent jQuery from blocking initial rendering, and also leave jQuery's $(document).ready() intact
+            This is also great for Google Pagespeed.
+            
+            !!ONLY PLACE ASYNCHRONOUS OR INLINE JAVASCRIPT IN HEADER!!
+        {% endcomment %}
+        <script>(function(w,d,u){w.readyQ=[];w.bindReadyQ=[];function p(x,y){if(x=="ready"){w.bindReadyQ.push(y);}else{w.readyQ.push(x);}};var a={ready:p,bind:p};w.$=w.jQuery=function(f){if(f===d||f===u){return a}else{p(f)}}})(window,document)</script>
+        {{ content_for_header }}
+        <script type="text/javascript">
+            $(function() {
+                $('html').removeClass('no-js').addClass('js');
+            });
+        </script>
+    </head>
+    <body id="{{ meta_title | handle }}" class="{% if cart.line_items.size > 0 %}have_items {% endif %}{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | split: ' ' | first | handle }}" >
+        {% if template == 'index' %}
+            <div class="frontpage-wrapper">
+                <div class="flexslider">
+                    <ul class="slides">
+                        {% for slide in settings.slideshow_slides %}
+                            {% capture slide_img %}slide_{{ slide.id }}.jpg{% endcapture %}
+                            <li style="background-image:url({{ slide_img | asset_url }});">
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <script type="text/javascript">
+                    $(function() {
+                      $('.flexslider').flexslider({
+                        animation: "fade",
+                        controlNav: false,
+                        touch:false,
+                        slideshow: true,
+                        slideshowSpeed: 3500,
+                        animationSpeed: 2000,
+                        start:function() {
+                            $('.header-logo').addClass('loaded');
+                        }
+                      });
+                    });
+                    $(function(){
+                        $('#show-more-arrow').on('click',function(e) {
+                            var element = document.getElementsByTagName('main')[0];
+                            var top = $(element).offset().top;
+                            $("html, body").animate({ scrollTop: top}, 800);
+                        });
+                    });
+                </script>
+                <div class="frontpage-overlay">
+                    <div class="overlay-content-wrapper">
+                        <div class="overlay-content">
+                            <h1 class="header-logo" itemscope itemtype="http://schema.org/Organization">
+                                {% if settings.logo_frontpage == 'use_custom' %}
+                                    <a href="/" itemprop="url">
+                    					<img src="{{ 'logo_front.png' | asset_url }}" alt="{{ shop.name }}" itemprop="logo" />
+                    				</a>
+                                {% else %}
+                                    {% if settings.logo_use_image and settings.logo_frontpage != 'use_shop_name' %}
+                        				<a href="/" itemprop="url">
+                        					<img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" itemprop="logo" />
+                        				</a>
+                        			{% else %}
+                        				<a href="/" itemprop="url">{{ shop.name }}</a>
+                        			{% endif %}
+                    			{% endif %}
+                            </h1>
+                        </div>
+                        <div id="show-more-arrow"><img src="{{ 'show-more-arrow.svg' | asset_url}}"></div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+        <div style="height:{% unless template contains 'product' %}120{% else %}65{% endunless %}px;"></div>
+        {% endif %}
+        <header class="site-header" role="banner">
+            <div class="grid--full">
+                <div class="grid-item text-left small--one-sixth medium--one-sixth large--one-sixth">
+                    <a href="#" id="menuToggle">
+                        <i class="panda-icon-ui-handle"></i>
+                    </a>
+                </div>
+                <div class="triangle"></div>
+            	{% comment %}
+            	<div class="grid-item text-center small--two-thirds medium--two-thirds large--two-thirds">
+            			<div class="header-logo" itemscope itemtype="http://schema.org/Organization">
+            			{% if settings.logo_use_image %}
+            				<a href="/" itemprop="url">
+            					<img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" itemprop="logo" />
+            				</a>
+            			{% else %}
+            				<a href="/" itemprop="url">{{ shop.name }}</a>
+            			{% endif %}
+            			</div>
+            	</div>
+            	{% endcomment %}
+            	<div class="grid-item text-right small--one-sixth medium--one-sixth large--one-sixth">
+            	    {% if settings.show_search_header %}
+            	        <a href="/{{ shop.handles.search }}" id="searchToggle">
+            		        <i class="panda-icon-ui-search"></i>
+            		    </a>
+            		{% endif %}
+            		{% if settings.ecommerce_on %}
+            		<a href="/{{ shop.handles.cart }}" id="cartToggle" class="relative">
+            		    <div class="cart-dot"></div>
+            			<i class="panda-icon-ui-cart"></i>
+            		</a>
+            		{% endif %}
+            	</div>
+            </div>
+        </header>
+        <div id="backdrop"></div>
+        <div id="navigation">
+            <i class="panda-icon-ui-close modal--close"></i>
+            <div class="navigation-menu">
+                {% include 'site-navigation' %}
+            </div>
+        </div>
+        <div id="search">
+            {% form 'search' class: 'input-group search-bar-top' %}
+                <input type="hidden" name="type" value="product">
+                <span class="input-group-btn">
+                    <button type="submit">
+                        <i class="panda-icon-ui-search"></i>
+                    </button>
+                </span>
+                <input type="search" onfocus="this.select();" name="q" value="{{ search.terms | escape }}" autocomplete="off" placeholder="{{ lang.search_our_store | def:'Search our store' | escape }}" class="input-group-field" />
+                <span class="input-group-btn modal--close">
+                    <i class="panda-icon-ui-close"></i>
+                </span>
+            {% endform %}
+        </div>
+        <div id="cart">
+            <i class="panda-icon-ui-close modal--close"></i>
+            <div class="cart-menu">
+                
+            </div>
+            <div class="cart-summary">
+                <div class="relative full-height">
+                    <div class="cart-subtotal">
+    					{{ lang.subtotal | def:'Subtotal' }}
+    					<span class="cart-subtotal--price right">{{ cart.total_price | money }}</span>
+    				</div>
+    				
+    				{% comment %}
+    					name="checkout" is required for the submit button to work
+    				{% endcomment %}
+    				<a class="btn btn--large btn--full checkout-btn" href="/{{ shop.handles.cart }}/{{ shop.handles.checkout }}"></a>
+				</div>
+            </div>
+        </div>
+        {% unless template contains 'product' %}
+        
+                <nav class="nav-bar {% if template contains 'index' %}text-right{% else %}text-center{% endif %}" role="navigation">
+
+                        {% include 'site-nav' %}
+                </nav>
+        
+        {% endunless %}
+        
+        <main class="main-content" role="main">
+            {% comment %}}
+                We have a template file to render.
+                That's what content_for_layout is for.
+            {% endcomment %}
+            {{ content_for_layout }}
+        </main>
+        
+        <footer class="site-footer small--text-center" role="contentinfo">
+            {% if footer_quicklinks_enable %}
+            <ul class="footer_menu">
+				{% for link in linklists[settings.footer_quicklinks_linklist].links %}
+					<li><a class="h4" href="{{ link.url }}">{{ link.title }}</a></li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+
+            <hr class="hr--clear">
+
+        
+    		<div class="grid--full">
+    
+    			<div class="grid-item large--one-quarter text-center">
+    			    {% if settings.footer_social_enable %}
+    					{% comment %}
+    						Loop through the social network links
+    					{% endcomment %}
+    					{% include 'social-links' %}
+					{% endif %}
+    			</div>
+    			<div class="grid-item large--one-half text-center">
+    			{% if settings.footer_content != blank %}
+    			<pre>{{settings.footer_content}}</pre>
+    			{% endif %}
+    			</div>
+    			<div class="grid-item large--one-quarter text-center">
+    			    {% if shop.enabled_payment_icons.size > 0 %}
+                        <div class="text-center payment-icons">
+                        {% for payment in shop.enabled_payment_icons %}
+                            <i class="panda-icon-payment-{{ payment }}"></i>
+                        {% endfor %}
+                        </div>
+                    {% endif %}
+    			</div>
+    		</div>
+    		<p class="text-center">{{settings.footer_copy}} &copy; {{ now | date:'Y' }}</p>
+        </footer>
+        {% comment %}
+            (Part 2) Loading jQuery after content has been rendered
+        {% endcomment %}
+        {{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+        <script>
+            window.cart = {{ cart | json }};
+        </script>
+        {{ 'shop.js' | asset_url | script_tag }}
+        {% if template contains 'product' %}
+        {% comment %}JavaScript with helper classes used for variant options and product reviews{% endcomment %}
+        {{ 'drift.min.js' | asset_url | script_tag }}
+        <script src="/static/global/product_helper.js"></script>
+        {% endif %}
+        {% if template contains 'addresses' %}
+        {% comment %}JavaScript with helper classes used for address forms{% endcomment %}
+        <script src="/static/global/account_helper.js"></script>
+        {% endif %}
+        <script>(function($,d){$.each(readyQ,function(i,f){$(f)});$.each(bindReadyQ,function(i,f){$(d).bind("ready",f)})})(jQuery,document)</script>
+    </body>
+</html>
