@@ -23,7 +23,7 @@
             <meta name="msapplication-TileColor" content="#da532c">
             <meta name="theme-color" content="#ffffff">
         {% endif %}
-        <link rel="stylesheet" type="text/css" href="{{ 'site.css' | asset_url }}"
+        <link rel="stylesheet" type="text/css" href="{{ 'site.css.liquid' | asset_url }}"
     </head>
     <body id="{{ meta.title | handle }}" template-{{ template | replace: '.', ' ' | split: ' ' | first | handle }}">
         <div>
