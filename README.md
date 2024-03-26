@@ -1,1 +1,1 @@
-# theme-test
+# Theme template for Cradle CMS
