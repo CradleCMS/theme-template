@@ -1,1 +1,1 @@
-# Theme template for Cradle CMS
+# Skeleton template for Cradle CMS
