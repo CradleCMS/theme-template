@@ -26,8 +26,14 @@
         <link rel="stylesheet" type="text/css" href="{{ 'site.css.liquid' | asset_url }}"
     </head>
     <body id="{{ meta.title | handle }}" template-{{ template | replace: '.', ' ' | split: ' ' | first | handle }}">
-        <div>
+        <header>
+            <h1>{{ site.name }}</h1>
+        </header>
+        <main>
         	{{ contentForLayout }}
-        </div>
+        </main>
+        <footer>
+            <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> - {{ site.name }} - {{ lang.all_rights_reserved | def:'All rights reserved'}}</p>
+        </footer>
     </body>
 </html>
