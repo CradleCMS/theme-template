@@ -1,123 +1,125 @@
 {
   "name": "theme-template",
+  "version": "0.1.1",
+  "developer": "Cradle CMS",
   "description": "Template for Cradle theme",
-  "version": "0.1.0",
   "sections": [
-    {  
-  	"key": "global_settings",
-    "caption": "Global settings",
-    "type": "section",
-    "settings": [ 
-    	  { 
-  			"key": "favicon",
-        	"caption": "Favicon",
-        	"type": "header"
-          },
-    	  { 
-  			"key": "favicon_enable",
-            "caption": "Enable custom favicon",
-   	     	"type": "checkbox",
-        	"default": false
-           },
-    	  { 
-  			"key": "favicon_image",
-        	"caption": "Favicon",
-        	"type": "asset",
-        	"filename": "favicon.png",
-        	"max-width": 32,
-        	"max-height": 32,
-        	"description": "32px x 32px png"
-      	  },
-    	  { 
-  			"key": "border-radius",
-        	"caption": "Border radius",
-        	"type": "header"
-      	  },
-    	  { 
-  			"key": "head_extra_code",
-        	"caption": "Extra code for the head",
-        	"type": "textarea"
-      	  }
-      	]
+    {
+      "key": "global",
+      "type": "section",
+      "caption": "Global",
+      "settings": [
+        {
+          "caption": "Favicon",
+          "key": "favicon",
+          "type": "header"
+        },
+        {
+          "caption": "Enable custom favicon",
+          "default": false,
+          "key": "favicon_enable",
+          "type": "checkbox"
+        },
+        {
+          "caption": "Favicon",
+          "description": "32px x 32px png",
+          "filename": "favicon.png",
+          "key": "favicon_image",
+          "max-height": 32,
+          "max-width": 32,
+          "type": "asset"
+        },
+        {
+          "caption": "Closed site",
+          "description": "Settings for the restricted template used when the site is closed",
+          "key": "closed_site",
+          "type": "header"
+        },
+        {
+          "caption": "Message on closed site",
+          "key": "closed_message",
+          "type": "textarea"
+        }
+      ]
     },
-	{
-	"key": "colors",
-    "caption": "Colors",
-    "type": "section",
-    "settings": [
-	  {
-		"key": "general_colors",
-        "caption": "General Colors",
-        "type": "header"
-      },
-	  {
-		"key": "color_primary",
-        "caption": "Primary Color",
-        "type": "color",
-        "description": "Used for text links and primary buttons"
-      },
-	  {
-		"key": "color_background",
-        "caption": "Body Background",
-        "type": "color"
-      },
-	  {
-		"key": "color_accent",
-        "caption": "Accent Color",
-        "type": "color",
-        "description": "Used for Accent Color"
-      },
-	  {
-		"key": "color_secondary",
-        "caption": "Secondary Color",
-        "type": "color",
-        "description": "Used for secondary buttons"
-      }
-    ]
-  },
-  {
-	"key": "header",
-    "caption": "Header",
-    "type": "section",
-    "settings": [
-	  {
-		"key": "main_nav",
-        "caption": "Main nav linklist",
-        "type": "linklist"
-      }
-    ]
-  },
-  {
-	"key": "homepage",
-    "caption": "Homepage",
-    "type": "section",
-    "settings": [
-	  {
-		"key": "homepage_news",
-        "caption": "banners to show on the homepage",
-        "type": "header"
-      },
-	  {
-		"key": "homepage_banners",
-        "type": "struct",
-        "struct": [
-		  {
-		    "key": "homepage_banners_url",
-            "caption": "URL",
-            "type": "text"
-          },
-	      {
-		    "key": "homepage_banners_image",
-            "caption": "Select a banner image",
-            "type": "asset",
-            "filename": "homepage_banner.png",
-            "max-width": 1200,
-            "max-height": 1200,
-            "description": "Recommend the optimal width and height for your image here."
-          }
-        ]
-      }
-    ]
-  }
+    {
+      "key": "colors",
+      "type": "section",
+      "caption": "Colors",
+      "settings": [
+        {
+          "caption": "General Colors",
+          "key": "general_colors",
+          "type": "header"
+        },
+        {
+          "caption": "Primary Color",
+          "description": "Used for text links and primary buttons",
+          "key": "color_primary",
+          "type": "color"
+        },
+        {
+          "caption": "Body Background",
+          "key": "color_background",
+          "type": "color"
+        },
+        {
+          "caption": "Accent Color",
+          "description": "Used for Accent Color",
+          "key": "color_accent",
+          "type": "color"
+        },
+        {
+          "caption": "Secondary Color",
+          "description": "Used for secondary buttons",
+          "key": "color_secondary",
+          "type": "color"
+        }
+      ]
+    },
+    {
+      "key": "header",
+      "type": "section",
+      "caption": "Header",
+      "settings": [
+        {
+          "caption": "Main nav linklist",
+          "key": "main_nav",
+          "type": "linklist"
+        }
+      ]
+    },
+    {
+      "key": "homepage",
+      "type": "section",
+      "caption": "Homepage",
+      "settings": [
+        {
+          "caption": "banners to show on the homepage",
+          "key": "homepage_news",
+          "type": "header"
+        },
+        {
+          "key": "homepage_banners",
+          "struct": [
+            {
+              "caption": "URL",
+              "key": "homepage_banners_url",
+              "type": "text"
+            },
+            {
+              "caption": "Select a banner image",
+              "description": "Recommend the optimal width and height for your image here.",
+              "filename": "homepage_banner.png",
+              "key": "homepage_banners_image",
+              "max-height": 1200,
+              "max-width": 1200,
+              "type": "asset"
+            }
+          ],
+          "type": "struct"
+        }
+      ]
+    }
   ]
 }
