@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>
+        	{{ site.name }} {% if meta.title != blank and meta.title != site.name %} | {{meta.title}}{% endif %}
+        </title>	
+        {% if metaDescription %}
+        <meta name="description" content="{{ metaDescription | escape }}" />
+        {% endif %}
+        {% if metaKeywords %}
+        <meta name="keywords" content="{{ metaKeywords | escape }}" />
+        {% endif %}
+        <link rel="canonical" href="{{ canonicalUrl }}" />
+        {% include 'open-graph-tags' %}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="{{ 'site.css.liquid' | asset_url }}"
+    </head>
+    <body id="{{ meta.title | handle }}" class="template-{{ template | replace: '.', ' ' | split: ' ' | first | handle }}">
+        <header>
+            <h1>{{ site.name }}</h1>
+        </header>
+        <main>
+        	{{ settings.closed_message }}
+        </main>
+        <footer>
+            <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> - {{ site.name }} - {{ lang.all_rights_reserved | def:'All rights reserved'}}</p>
+        </footer>
+    </body>
+</html>
