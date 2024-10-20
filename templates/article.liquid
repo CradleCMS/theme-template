@@ -1,6 +1,6 @@
 <article>
     <h1>{{ meta.h1 }}</h1>
-    <section>{{ article.html }}</section>
+    <section class="{{ article.format }}">{{ article.html }}</section>
     <nav id="next-prev">
         <p class="prev">
             {% unless article.previous == empty %}
