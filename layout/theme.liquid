@@ -19,6 +19,7 @@
         {% endif %}
         {% include 'open-graph-tags' %}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" type="text/css" href="{{ 'editor-styles.css' | asset_url }}"
         <link rel="stylesheet" type="text/css" href="{{ 'site.css.liquid' | asset_url }}"
     </head>
     <body id="{{ meta.title | handle }}" class="template-{{ template | replace: '.', ' ' | split: ' ' | first | handle }}">
