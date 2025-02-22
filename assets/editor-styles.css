@@ -43,8 +43,6 @@
 .RTE .outset-both
 {
   max-width: 96vw;
-  margin-left: 2vw;
-  margin-right: 2vw;
 }
 @media (min-width: 640px) {
     .RTE .outset-right {
