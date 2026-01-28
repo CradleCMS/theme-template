@@ -1,5 +1,5 @@
 <section>
-    <h1>List of blogs</h1>
+    <h1> {{ 'List of blogs' | t }} </h1>
     {% for blog in blogs %}
         <h4>
             <a href="{{ blog | url }}">{{ blog.title }} ({{ blog.articleCount }})</a>
@@ -31,7 +31,7 @@
                 		{% endif %}	  
                         </dd>
                     </a>
-                    <p><a href="{{ article | url }}">Read</a></p> 
+                    <p><a href="{{ article | url }}"> {{'Read' | t }} </a></p> 
                 </div>            
             </div>
             <hr>
