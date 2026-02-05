@@ -1,0 +1,24 @@
+<div>
+   {% if product.featuredImage %}
+    <figure>
+        <img src="{{ product.featuredImage | product_img_url:0,500 }}" alt="{{ product.featuredImage.alt }}" />
+    </figure>
+  {% endif %}
+    <div>
+      <h3>
+          {{ product.meta.h1 }}
+      </h3>
+      <div>
+          {% if product.variants.size > 1 and product.priceMin < product.priceMax %}
+              <span>
+                  {{ 'from' | t }}{{ product.priceMin | money }}
+              </span>
+          {% else %}
+              <span>{{ product.price | money }}</span>
+          {% endif %}
+      </div>
+    </div>
+    <div>
+      <a href="{{ product | url }}">{{ 'Read more' | t:'collection' }}</a>
+    </div>
+</div>
